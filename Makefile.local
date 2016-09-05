@@ -1,0 +1,2 @@
+APP_SERVER := http://192.168.102.188:8080
+APP_REMOTE := yes
