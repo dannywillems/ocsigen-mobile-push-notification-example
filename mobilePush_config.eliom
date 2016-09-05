@@ -55,3 +55,5 @@ let os_db = Ocsigen_extensions.Configuration.(
 )
 
 let _ = Eliom_config.parse_config [app; avatars; os_db]
+
+let server_key = "YOUR SERVER KEY"

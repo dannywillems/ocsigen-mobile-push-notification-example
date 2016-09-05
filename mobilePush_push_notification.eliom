@@ -1,6 +1,6 @@
 let counter = ref 0
 
-let server_key = "YOUR SERVER KEY"
+let server_key = MobilePush_config.server_key
 
 (* ----------------- *)
 (* Register a new ID *)
