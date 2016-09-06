@@ -112,4 +112,5 @@
         <auto-install enabled="true" />
     </chcp>
 
+    <plugin name="cordova-plugin-inappbrowser" spec="1.4.0" />
 </widget>

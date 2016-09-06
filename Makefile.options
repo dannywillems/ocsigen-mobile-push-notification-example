@@ -17,7 +17,7 @@ SERVER_ELIOM_PACKAGES := ocsigen-start.server
 SERVER_PACKAGES := lwt.ppx js_of_ocaml.deriving.ppx ppx_deriving.std ocsigen-widgets.server yojson
 # OCamlfind packages for the client
 CLIENT_PACKAGES := lwt.ppx js_of_ocaml.ppx js_of_ocaml.deriving.ppx ppx_deriving.std \
-                       ocsigen-start.client gen_js_api cordova cordova-plugin-statusbar ocaml-js-stdlib cordova-plugin-push
+                       ocsigen-start.client gen_js_api cordova cordova-plugin-statusbar ocaml-js-stdlib cordova-plugin-push cordova-plugin-inappbrowser
 
 # CSS files to copy from other projects into the working directory
 #SHAREDIR=$(shell $(OPAM) config var share)
