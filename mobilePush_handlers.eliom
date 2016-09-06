@@ -1,31 +1,54 @@
 module B = Bootstrap
 
 let paragraph = B.p "hello world"
-let button =
+let create_button text fn =
   Eliom_content.Html.D.(button
     ~a:
     [
-      a_class ["btn" ; "btn-primary"] ;
-      a_onclick [%client fun _ -> ignore (
-        ~%MobilePush_push_notification.rpc_test_send_notification_low ())]
+      a_class ["btn" ; "btn-primary" ; "margin"] ;
+      a_onclick [%client fun _ -> ignore (~%fn ())]
     ]
-    [pcdata "Low priority"]
+    [pcdata text]
   )
 
-let button2 =
-  Eliom_content.Html.D.(button
-    ~a:
+let low_button = create_button
+  "Low priority"
+  (MobilePush_push_notification.rpc_test_send_notification_low)
+
+let high_button = create_button
+  "high priority"
+  (MobilePush_push_notification.rpc_test_send_notification_max)
+
+let led_color_button = create_button
+  "Led color Ocsigen"
+  (MobilePush_push_notification.rpc_test_send_notification_led_color)
+
+let ocsigen_button = create_button
+  "Go to ocsigen server"
+  (MobilePush_push_notification.rpc_test_send_notification_redirection)
+
+let container children =
+  B.container
+    ~css:["text-center"]
+    ~children:
     [
-      a_class ["btn" ; "btn-primary"] ;
-      a_onclick [%client fun _ -> ignore (
-        ~%MobilePush_push_notification.rpc_test_send_notification_max ())]
+      B.row
+        ~children:
+        (List.map
+          (fun x -> B.col ~lg:12 ~children:[x] ())
+          children
+        )
+        ()
     ]
-    [pcdata "High priority"]
-  )
+    ()
+
+let main_container =
+  container
+  [
+    paragraph ; high_button ; low_button ; led_color_button ; ocsigen_button
+  ]
 
 [%%shared
   let main_service_handler () () =
-    Lwt.return @@ [~%paragraph ; ~%button ; ~%button2]
+    Lwt.return @@ [~%main_container]
 ]
-
-
