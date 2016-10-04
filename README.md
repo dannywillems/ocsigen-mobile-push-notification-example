@@ -33,6 +33,10 @@ and to compile the mobile application, use:
 make run-[android|ios]
 ```
 
+To test the notification, the application must be in background (else the
+notifications are not showed). Open a web browser and click on the buttons: you
+will receive a notification on your phone.
+
 Generated files
 ---------------
 
