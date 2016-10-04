@@ -2,66 +2,133 @@
 #           SETTINGS FOR THE ELIOM PROJECT mobilePush
 #----------------------------------------------------------------------
 # Required binaries
-OPAM         := opam
+OPAM                  := opam
 
-PROJECT_NAME := mobilePush
+PROJECT_NAME          := mobilePush
 
-# Source files for the server
-SERVER_FILES := $(wildcard *.eliomi *.eliom *.ml)
-# Source files for the client
-CLIENT_FILES := $(wildcard *.eliomi *.eliom)
+##----------------------------------------------------------------------
+## The following part contains the settings for the compilation process like the
+## server/client OPAM packages and the server/client files.
+
+# Source files for the server. By default, it's all eliom, eliomi and ml files
+# in the project root directory.
+SERVER_FILES          := $(wildcard *.eliomi *.eliom *.ml)
+
+# Source files for the client. By default, it's all eliom and eliomi files
+# in the project root directory.
+CLIENT_FILES          := $(wildcard *.eliomi *.eliom)
 
 # OCamlfind packages for the server (for modules which defines services)
 SERVER_ELIOM_PACKAGES := ocsigen-start.server
-# OCamlfind packages for the server
-SERVER_PACKAGES := lwt.ppx js_of_ocaml.deriving.ppx ppx_deriving.std ocsigen-widgets.server yojson
-# OCamlfind packages for the client
-CLIENT_PACKAGES := lwt.ppx js_of_ocaml.ppx js_of_ocaml.deriving.ppx ppx_deriving.std \
-                       ocsigen-start.client gen_js_api cordova cordova-plugin-statusbar ocaml-js-stdlib cordova-plugin-push cordova-plugin-inappbrowser
 
-# CSS files to copy from other projects into the working directory
-#SHAREDIR=$(shell $(OPAM) config var share)
-#EXTERNAL_CSS_FILES=$(SHAREDIR)/ocsigen-toolkit/css/*.css
+# OCamlfind packages for the server
+SERVER_PACKAGES       := lwt.ppx js_of_ocaml.deriving.ppx ppx_deriving.std \
+                        ocsigen-widgets.server
+
+# OCamlfind packages for the client
+CLIENT_PACKAGES       := lwt.ppx js_of_ocaml.ppx js_of_ocaml.deriving.ppx \
+                         ppx_deriving.std ocsigen-start.client \
+                         gen_js_api cordova cordova-plugin-statusbar \
+                         ocaml-js-stdlib cordova-plugin-push \
+                         cordova-plugin-inappbrowser
+
+##----------------------------------------------------------------------
+
+##----------------------------------------------------------------------
+## The following part contains the configuration for the ocsigenserver.
+
+# User to run server with (make run.*)
+WWWUSER               := www-data
+WWWGROUP              := www-data
+
+# Port for running the server (make run.*)
+PORT                  := 80
+
+# Port for testing (make test.*)
+TEST_PORT             := 8080
+
+# Root of installation (must end with /)
+PREFIX                := /usr/local/
+
+# Local folder for make test.* (must end with /)
+TEST_PREFIX           := local/
+
+## The installation tree (relative to $(PREFIX) when installing/running or
+## $(TEST_PREFIX) when testing).
+
+# Configuration file $(PROJECT_NAME).conf
+ETCDIR                := etc/${PROJECT_NAME}
+
+# Project's library $(PROJECT_NAME).cma (cmxs)
+LIBDIR                := lib/${PROJECT_NAME}
+
+# Command pipe, eg. $ echo restart > $(INSTALL_PREFIX)$(CMDPIPE)
+CMDPIPE               := var/run/${PROJECT_NAME}-cmd
+
+# Ocsigenserver's logging files
+LOGDIR                := var/log/${PROJECT_NAME}
+
+# Ocsigenserver's persistent data files
+DATADIR               := var/data/${PROJECT_NAME}
+
+# Copy of $(LOCAL_STATIC)
+STATICDIR             := var/www/${PROJECT_NAME}/static
+
+# Project's static files
+FILESDIR              := var/www/${PROJECT_NAME}
+
+# Project's JavaScript file directory
+ELIOMSTATICDIR        := var/www/${PROJECT_NAME}
+
+##----------------------------------------------------------------------
+
+##----------------------------------------------------------------------
+## The following part contains the settings for CSS and SASS files.
+
+# CSS files to copy from other projects into the working directory. By default,
+# Ocsigen-start needs the CSS files of ocsigen-toolkit.
+SHAREDIR              := $(shell $(OPAM) config var share)
+EXTERNAL_CSS_FILES    := $(SHAREDIR)/ocsigen-toolkit/css/*.css
 
 # Directory with files to be statically served
-LOCAL_STATIC = static
-LOCAL_STATIC_CSS = $(LOCAL_STATIC)/css
+LOCAL_STATIC          := static
+LOCAL_STATIC_CSS      := $(LOCAL_STATIC)/css
+
+# Main CSS file
+LOCAL_CSS             := $(LOCAL_STATIC_CSS)/$(PROJECT_NAME).css
+
+# CSS destination
+CSSDIR                := $(TEST_PREFIX)$(ELIOMSTATICDIR)/css
+CSS_PREFIX            := $(CSSDIR)/$(PROJECT_NAME)
+DEST                  := $(CSS_PREFIX).css
+
+# SASS related variables
+SASSDIR               := sass
+SRC                   := $(SASSDIR)/$(PROJECT_NAME).scss
+FILES                 := $(SASSDIR)/lib/*.scss
+
+##----------------------------------------------------------------------
+
+##----------------------------------------------------------------------
+## The following part contains the settings for debugging
 
 # Debug application (yes/no): Debugging info in compilation,
 # JavaScript, ocsigenserver
-DEBUG := yes
+DEBUG                 := yes
 
-# User to run server with (make run.*)
-WWWUSER := www-data
-WWWGROUP := www-data
+##----------------------------------------------------------------------
 
-# Port for running the server (make run.*)
-PORT := 80
+##----------------------------------------------------------------------
+## The following part contains the settings for the mobile application.
 
-# Port for testing (make test.*)
-TEST_PORT := 8080
+MOBILE_APP_ID                  := com.mobilePush.mobile
+MOBILE_APP_NAME                := mobilePush
+MOBILE_APP_VERSION             := 0.1
+MOBILE_DESCRIPTION             := mobilePush mobile application
+MOBILE_AUTHOR_EMAIL            := developer@domain.com
+MOBILE_AUTHOR_HREF             := http://domain.com
+MOBILE_AUTHOR_DESCRIPTION      := mobilePush team
+MOBILE_ANDROID_SDK_VERSION     := 15
+MOBILE_NOTIFICATIONS_SENDER_ID := 424242424242
 
-# Root of installation (must end with /)
-PREFIX := /usr/local/
-
-# Local folder for make test.* (must end with /)
-TEST_PREFIX := local/
-
-# The installation tree (relative to $(PREFIX) when
-# installing/running or $(TEST_PREFIX) when testing).
-# Configuration file $(PROJECT_NAME).conf
-ETCDIR := etc/${PROJECT_NAME}
-# Project's library $(PROJECT_NAME).cma (cmxs)
-LIBDIR := lib/${PROJECT_NAME}
-# Command pipe, eg. $ echo restart > $(INSTALL_PREFIX)$(CMDPIPE)
-CMDPIPE := var/run/${PROJECT_NAME}-cmd
-# Ocsigenserver's logging files
-LOGDIR := var/log/${PROJECT_NAME}
-# Ocsigenserver's persistent data files
-DATADIR := var/data/${PROJECT_NAME}
-# Copy of $(LOCAL_STATIC)
-STATICDIR := var/www/${PROJECT_NAME}/static
-# Project's static files
-FILESDIR := var/www/${PROJECT_NAME}
-# Project's JavaScript file directory
-ELIOMSTATICDIR := var/www/${PROJECT_NAME}
+##----------------------------------------------------------------------

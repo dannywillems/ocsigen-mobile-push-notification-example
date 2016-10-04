@@ -16,19 +16,8 @@
     <extension findlib-package="ocsigenserver.ext.accesscontrol"/>
     <extension findlib-package="ocsigenserver.ext.cors"/>
     <commandpipe>%%CMDPIPE%%</commandpipe>
+    <extension findlib-package="ocsigenserver.ext.ocsipersist-pgsql"/>
     <extension findlib-package="ocsigenserver.ext.staticmod"/>
-    <!-- we use the PostgreSQL backend for ocsipersist,
-         but there is also a DBM and an SQLite backend -->
-    <!-- <extension findlib-package="ocsigenserver.ext.ocsipersist-dbm"> -->
-    <!-- <extension findlib-package="ocsigenserver.ext.ocsipersist-sqlite"> -->
-    <extension findlib-package="ocsigenserver.ext.ocsipersist-pgsql">
-      <database
-        host="%%DB_HOST%%"
-        port="%%DB_PORT%%"
-        user="%%DB_USER%%"
-        password="%%DB_PASSWORD%%"
-      />
-    </extension>
     <extension findlib-package="eliom.server"/>
     %%% This will include the packages defined as SERVER_PACKAGES in your Makefile:
     %%PACKAGES%%
@@ -39,13 +28,6 @@
       <eliommodule module="%%LIBDIR%%/%%PROJECT_NAME%%.cma">
         <app name="%%APPNAME%%" css="%%CSSNAME%%" />
         <avatars dir="%%FILESDIR%%/avatars" />
-        <os-db
-          host="%%DB_HOST%%"
-          port="%%DB_PORT%%"
-          user="%%DB_USER%%"
-          password="%%DB_PASSWORD%%"
-          database="%%DB_NAME%%"
-        />
       </eliommodule>
       <eliom/>
       <cors max_age="86400"

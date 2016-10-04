@@ -11,3 +11,6 @@ scripts/*.cmi
 scripts/*.cmo
 
 old
+static/css/ot_*
+mobile/eliom_loader.cm*
+mobile/eliom_loader.byte

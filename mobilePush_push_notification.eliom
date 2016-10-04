@@ -1,6 +1,7 @@
 let counter = ref 0
 
-let server_key = MobilePush_config.server_key
+let%client sender_id  = MobilePush_config.sender_id
+let%server server_key = MobilePush_config.server_key
 
 (* ----------------- *)
 (* Register a new ID *)
@@ -38,12 +39,12 @@ let%client push_notification () =
       ~vibrate:true
       ~clear_notifications:false
       ~force_show:true
-      ~sender_ID:"138084667561"
+      ~sender_ID:sender_id
       ()
   in
   let ios =
       Cordova_push.Init_options.Ios.create
-      ~sender_ID:"138084667561"
+      ~sender_ID:sender_id
       ~sound:true
       ~gcm_sandbox:true
      ()

@@ -9,12 +9,6 @@
 let app_name = ref ""
 let css_name = ref ""
 let avatar_dir = ref []
-let os_db_host = ref None
-let os_db_port = ref None
-let os_db_user = ref None
-let os_db_password = ref None
-let os_db_database = ref None
-let os_db_unix_domain_socket_dir = ref None
 
 let app = Ocsigen_extensions.Configuration.(
   let attributes = [
@@ -36,24 +30,7 @@ let avatars = Ocsigen_extensions.Configuration.(
   element ~name:"avatars" ~obligatory:true ~attributes ()
 )
 
-let os_db = Ocsigen_extensions.Configuration.(
-  let attributes = [
-    attribute ~name:"host" (fun h -> os_db_host := Some h);
-    attribute ~name:"port" (fun h -> os_db_port := begin
-      try Some (int_of_string h)
-      with Failure _ -> raise @@ Ocsigen_extensions.Error_in_config_file
-                                   "port is not an integer"
-    end);
-    attribute ~name:"user" (fun h -> os_db_user := Some h);
-    attribute ~name:"password" (fun h -> os_db_password := Some h);
-    attribute ~name:"database" (fun h -> os_db_database := Some h);
-    attribute ~name:"unix_domain_socket_dir"
-      (fun h -> os_db_unix_domain_socket_dir := Some h);
-  ]
-  in
-  element ~name:"os-db" ~attributes ()
-)
+let _ = Eliom_config.parse_config [app; avatars]
 
-let _ = Eliom_config.parse_config [app; avatars; os_db]
-
-let server_key = "YOUR SERVER KEY"
+let%client sender_id  = "YOUR SENDER ID"
+let%server server_key = "YOUR SERVER KEY"
