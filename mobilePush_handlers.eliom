@@ -1,6 +1,5 @@
 module B = Bootstrap
 
-let paragraph = B.p "hello world"
 let create_button text fn =
   Eliom_content.Html.D.(button
     ~a:
@@ -45,7 +44,7 @@ let container children =
 let main_container =
   container
   [
-    paragraph ; high_button ; low_button ; led_color_button ; ocsigen_button
+    high_button ; low_button ; led_color_button ; ocsigen_button
   ]
 
 [%%shared

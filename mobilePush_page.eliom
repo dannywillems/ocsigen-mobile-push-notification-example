@@ -35,7 +35,8 @@ let%server the_local_js = [
 let%client the_local_js = [] (* in index.html *)
 
 let%shared the_local_css = [
-  ["os.css"]
+  ["os.css"];
+  ["mobilePush.css"]
 ]
 
 [%%shared.start]
