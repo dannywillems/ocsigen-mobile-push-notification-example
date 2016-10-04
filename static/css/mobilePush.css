@@ -140,3 +140,8 @@ ul#test_app2-navbar {
   display: inline-block;
   padding-right: 15px;
 }
+
+.margin
+{
+  margin: 10px;
+}
