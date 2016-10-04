@@ -1,7 +1,3 @@
-**This is the README generated from the os.pgocaml template. I removed a lot of
-things useless for this project from this initial template so this instructions
-below are not up-to-date.**
-
 Instructions
 ============
 
