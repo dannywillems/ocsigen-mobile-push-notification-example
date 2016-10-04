@@ -14,9 +14,10 @@ this example has been removed.
 Compile and run the application:
 ================================
 
-You need to install [ocsigen-start](https://github.com/ocsigen/ocsigen-start), [cordova](https://github.com/dannywillems/ocaml-cordova), [cordova-plugin-statusbar](https://github.com/dannywillems/ocaml-cordova-plugin-statusbar), [cordova-plugin-push](https://github.com/dannywillems/ocaml-cordova-plugin-push), [gen_js_api](https://github.com/lexifi/gen_js_api) and [yojson](http://mjambon.com/yojson.html).
+You need to install [ocsigen-start](https://github.com/ocsigen/ocsigen-start), [cordova](https://github.com/dannywillems/ocaml-cordova), [cordova-plugin-statusbar](https://github.com/dannywillems/ocaml-cordova-plugin-statusbar), [cordova-plugin-push](https://github.com/dannywillems/ocaml-cordova-plugin-push), [gen_js_api](https://github.com/lexifi/gen_js_api), [ocaml-js-stdlib](https://github.com/dannywillems/ocaml-js-stdlib) and [yojson](http://mjambon.com/yojson.html)
 
 ```
+opam pin add ocaml-js-stdlib https://github.com/dannywillems/ocaml-js-stdlib.git
 opam install yojson ocsigen-start cordova cordova-plugin-statusbar cordova-plugin-push-notifications
 ```
 
