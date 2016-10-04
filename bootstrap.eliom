@@ -81,8 +81,8 @@ module Button =
     let submit ?(css=[]) ?(css_type=Default) id content =
       button ~css ~css_type `Submit id content
 
-    let link ?(css=[]) ?(css_type=Default) ?(enable=true) ?(active=true)
-      ?(aria_pressed=true) button_type service id content param =
+    let link ?(css=[]) ?(css_type=Default)
+      ?(aria_pressed=true) service id content param =
       a ~service
         ~a:[a_class (["btn" ; to_string css_type] @ css) ;
             a_id id ;

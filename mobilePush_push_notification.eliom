@@ -91,7 +91,7 @@ let test_send_notification_led_color () =
   let notification =
     Os_push_notifications.Notification.empty ()
   |> Os_push_notifications.Notification.add_title "Led"
-  |> Os_push_notifications.Notification.add_message "Led color must changed to
+  |> Os_push_notifications.Notification.add_message "Led color must changed to \
   Ocsigen color"
   |> Os_push_notifications.Notification.add_priority
     Os_push_notifications.Notification.Priority.Low
@@ -111,7 +111,7 @@ let test_send_notification_low () =
   let notification =
     Os_push_notifications.Notification.empty ()
   |> Os_push_notifications.Notification.add_title "Low priority"
-  |> Os_push_notifications.Notification.add_message "Must be under other
+  |> Os_push_notifications.Notification.add_message "Must be under other \
   notifications"
   |> Os_push_notifications.Notification.add_priority
     Os_push_notifications.Notification.Priority.Low
@@ -137,7 +137,7 @@ let test_send_notification_max () =
   let notification =
     Os_push_notifications.Notification.empty ()
   |> Os_push_notifications.Notification.add_title "High priority"
-  |> Os_push_notifications.Notification.add_message "Must be above other
+  |> Os_push_notifications.Notification.add_message "Must be above other \
   notifications"
   |> Os_push_notifications.Notification.add_actions action_1 action_2
   |> Os_push_notifications.Notification.add_soundname "default"
