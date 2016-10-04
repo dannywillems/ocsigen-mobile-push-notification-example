@@ -58,7 +58,7 @@ byte opt:: ${JS_PREFIX}.js
 byte opt:: $(CONFIG_FILES)
 
 ##----------------------------------------------------------------------
-## The following part has been generated with EBA template.
+## The following part has been generated with OS template.
 ## This will overload the default the required binaries
 
 ## DO NOT MOVE IT ON TOP OF THE `all` RULE!
