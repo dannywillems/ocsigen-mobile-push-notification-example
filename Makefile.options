@@ -29,7 +29,7 @@ SERVER_PACKAGES       := lwt.ppx js_of_ocaml.deriving.ppx ppx_deriving.std \
 CLIENT_PACKAGES       := lwt.ppx js_of_ocaml.ppx js_of_ocaml.deriving.ppx \
                          ppx_deriving.std ocsigen-start.client \
                          gen_js_api cordova cordova-plugin-statusbar \
-                         ocaml-js-stdlib cordova-plugin-push \
+                         ocaml-js-stdlib cordova-plugin-push-notifications \
                          cordova-plugin-inappbrowser
 
 ##----------------------------------------------------------------------
