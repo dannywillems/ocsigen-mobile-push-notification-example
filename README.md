@@ -10,11 +10,11 @@ template but useless services, modules and database stuff for this example has b
 Compile and run the application:
 ================================
 
-You need to install [ocsigen-start](https://github.com/ocsigen/ocsigen-start), [cordova](https://github.com/dannywillems/ocaml-cordova), [cordova-plugin-statusbar](https://github.com/dannywillems/ocaml-cordova-plugin-statusbar), [cordova-plugin-push](https://github.com/dannywillems/ocaml-cordova-plugin-push), [gen_js_api](https://github.com/lexifi/gen_js_api), [ocaml-js-stdlib](https://github.com/dannywillems/ocaml-js-stdlib) and [yojson](http://mjambon.com/yojson.html)
+You need to install [ocsigen-start](https://github.com/ocsigen/ocsigen-start), [cordova](https://github.com/dannywillems/ocaml-cordova), [cordova-plugin-statusbar](https://github.com/dannywillems/ocaml-cordova-plugin-statusbar), [cordova-plugin-push](https://github.com/dannywillems/ocaml-cordova-plugin-push), [gen_js_api](https://github.com/lexifi/gen_js_api), [ocaml-js-stdlib](https://github.com/dannywillems/ocaml-js-stdlib) and [cordova-plugin-inappbrowser](https://github.com/dannywillems/ocaml-cordova-plugin-inappbrowser).
 
 ```
 opam pin add ocaml-js-stdlib https://github.com/dannywillems/ocaml-js-stdlib.git
-opam install yojson ocsigen-start cordova cordova-plugin-statusbar cordova-plugin-push-notifications
+opam install yojson ocsigen-start cordova cordova-plugin-statusbar cordova-plugin-push-notifications cordova-plugin-inappbrowser
 ```
 
 **NB**: See how to install `ocsigen-start` first. It must be pinned for the
