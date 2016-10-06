@@ -104,7 +104,7 @@ DEST                  := $(CSS_PREFIX).css
 
 # SASS related variables
 SASSDIR               := sass
-SRC                   := $(SASSDIR)/$(PROJECT_NAME).scss
+SASSSRC               := $(SASSDIR)/$(PROJECT_NAME).scss
 FILES                 := $(SASSDIR)/lib/*.scss
 
 ##----------------------------------------------------------------------

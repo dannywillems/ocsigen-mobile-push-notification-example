@@ -1,17 +1,4 @@
-# Main CSS file
-LOCAL_CSS = $(LOCAL_STATIC)/css/$(PROJECT_NAME).css
-
-# CSS destination
-CSSDIR=$(TEST_PREFIX)$(ELIOMSTATICDIR)/css
-CSS_PREFIX=$(CSSDIR)/$(PROJECT_NAME)
-DEST = $(CSS_PREFIX).css
-
 css: $(DEST) import-external-css
-
-# SASS related variables
-SASSDIR=sass
-SRC = $(SASSDIR)/$(PROJECT_NAME).scss
-FILES = $(SASSDIR)/lib/*.scss
 
 # If you want to compile the CSS file from SASS files, uncomment the following
 # recipe and place your SASS files into the 'sass' directory.
@@ -44,5 +31,5 @@ $(DEST): $(LOCAL_CSS) | $(CSSDIR)
 
 import-external-css:
 ifneq "$(EXTERNAL_CSS_FILES)" ""
-	cp -n $(EXTERNAL_CSS_FILES) $(LOCAL_STATIC_CSS)
+	cp -n $(EXTERNAL_CSS_FILES) $(LOCAL_STATIC_CSS) ; true
 endif
