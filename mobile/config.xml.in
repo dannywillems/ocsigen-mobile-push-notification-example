@@ -75,7 +75,7 @@
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <!-- <allow-navigation href="*" /> --><!-- this seems to be necessary for outside resources, e.g., outside videos in iframes -->
     <!--<plugin name="cordova-plugin-crosswalk-webview" spec="~1.6.0" />-->
-    <plugin name="cordova-hot-code-push-plugin" spec="~1.2.5" />
+    <plugin name="cordova-hot-code-push-plugin" spec="~1.5.1" />
     <!-- <plugin name="cordova-plugin-facebook4" spec="~1.7.0"> -->
     <!--     <variable name="APP_ID" value="%%FACEBOOK_ID%%" /> -->
     <!--     <variable name="APP_NAME" value="besport" /> -->
@@ -115,7 +115,7 @@
     </chcp>
 
     <!-- Uncomment the following lines if you want to use push notifications -->
-    <plugin name="phonegap-plugin-push" spec="1.6.0" source="npm">
+    <plugin name="phonegap-plugin-push" spec="1.8.2" source="npm">
         <variable name="SENDER_ID" value="%%MOBILE_NOTIFICATIONS_SENDER_ID%%" />
     </plugin>
 
