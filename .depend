@@ -1,0 +1,69 @@
+_server/mobilePush.cmo : _server/mobilePush_page.cmo _server/mobilePush_handlers.cmo _server/mobilePush_base.cmo
+_server/mobilePush.cmx : _server/mobilePush_page.cmx _server/mobilePush_handlers.cmx _server/mobilePush_base.cmx
+_server/mobilePush.type_mli : _server/mobilePush_page.cmo _server/mobilePush_handlers.cmo _server/mobilePush_base.cmo
+_server/mobilePush.cmo : _server/mobilePush.type_mli
+_server/mobilePush.cmx : _server/mobilePush.type_mli
+_server/mobilePush_config.cmo :
+_server/mobilePush_config.cmx :
+_server/mobilePush_config.cmo : _server/mobilePush_config.type_mli
+_server/mobilePush_config.cmx : _server/mobilePush_config.type_mli
+_server/mobilePush_push_notification.cmo : _server/mobilePush_config.cmo
+_server/mobilePush_push_notification.cmx : _server/mobilePush_config.cmx
+_server/mobilePush_push_notification.type_mli : _server/mobilePush_config.cmo
+_server/mobilePush_push_notification.cmo : _server/mobilePush_push_notification.type_mli
+_server/mobilePush_push_notification.cmx : _server/mobilePush_push_notification.type_mli
+_server/mobilePush_handlers.cmo : _server/mobilePush_push_notification.cmo _server/bootstrap.cmo
+_server/mobilePush_handlers.cmx : _server/mobilePush_push_notification.cmx _server/bootstrap.cmx
+_server/mobilePush_handlers.type_mli : _server/mobilePush_push_notification.cmo _server/bootstrap.cmo
+_server/mobilePush_handlers.cmo : _server/mobilePush_handlers.type_mli
+_server/mobilePush_handlers.cmx : _server/mobilePush_handlers.type_mli
+_server/mobilePush_mobile.cmo :
+_server/mobilePush_mobile.cmx :
+_server/mobilePush_mobile.cmo : _server/mobilePush_mobile.type_mli
+_server/mobilePush_mobile.cmx : _server/mobilePush_mobile.type_mli
+_server/mobilePush_base.cmo : _server/mobilePush_config.cmo
+_server/mobilePush_base.cmx : _server/mobilePush_config.cmx
+_server/mobilePush_base.type_mli : _server/mobilePush_config.cmo
+_server/mobilePush_base.cmo : _server/mobilePush_base.type_mli
+_server/mobilePush_base.cmx : _server/mobilePush_base.type_mli
+_server/mobilePush_page.cmo : _server/mobilePush_config.cmo _server/mobilePush_base.cmo
+_server/mobilePush_page.cmx : _server/mobilePush_config.cmx _server/mobilePush_base.cmx
+_server/mobilePush_page.type_mli : _server/mobilePush_config.cmo _server/mobilePush_base.cmo
+_server/mobilePush_page.cmo : _server/mobilePush_page.type_mli
+_server/mobilePush_page.cmx : _server/mobilePush_page.type_mli
+_server/bootstrap.cmo :
+_server/bootstrap.cmx :
+_server/bootstrap.cmo : _server/bootstrap.type_mli
+_server/bootstrap.cmx : _server/bootstrap.type_mli
+_client/mobilePush.cmo : _client/mobilePush_page.cmo _client/mobilePush_handlers.cmo _client/mobilePush_base.cmo
+_client/mobilePush.cmx : _client/mobilePush_page.cmx _client/mobilePush_handlers.cmx _client/mobilePush_base.cmx
+_client/mobilePush.cmo : _server/mobilePush.type_mli
+_client/mobilePush.cmx : _server/mobilePush.type_mli
+_client/mobilePush_config.cmo :
+_client/mobilePush_config.cmx :
+_client/mobilePush_config.cmo : _server/mobilePush_config.type_mli
+_client/mobilePush_config.cmx : _server/mobilePush_config.type_mli
+_client/mobilePush_push_notification.cmo : _client/mobilePush_config.cmo
+_client/mobilePush_push_notification.cmx : _client/mobilePush_config.cmx
+_client/mobilePush_push_notification.cmo : _server/mobilePush_push_notification.type_mli
+_client/mobilePush_push_notification.cmx : _server/mobilePush_push_notification.type_mli
+_client/mobilePush_handlers.cmo :
+_client/mobilePush_handlers.cmx :
+_client/mobilePush_handlers.cmo : _server/mobilePush_handlers.type_mli
+_client/mobilePush_handlers.cmx : _server/mobilePush_handlers.type_mli
+_client/mobilePush_mobile.cmo : _client/mobilePush_push_notification.cmo
+_client/mobilePush_mobile.cmx : _client/mobilePush_push_notification.cmx
+_client/mobilePush_mobile.cmo : _server/mobilePush_mobile.type_mli
+_client/mobilePush_mobile.cmx : _server/mobilePush_mobile.type_mli
+_client/mobilePush_base.cmo :
+_client/mobilePush_base.cmx :
+_client/mobilePush_base.cmo : _server/mobilePush_base.type_mli
+_client/mobilePush_base.cmx : _server/mobilePush_base.type_mli
+_client/mobilePush_page.cmo :
+_client/mobilePush_page.cmx :
+_client/mobilePush_page.cmo : _server/mobilePush_page.type_mli
+_client/mobilePush_page.cmx : _server/mobilePush_page.type_mli
+_client/bootstrap.cmo :
+_client/bootstrap.cmx :
+_client/bootstrap.cmo : _server/bootstrap.type_mli
+_client/bootstrap.cmx : _server/bootstrap.type_mli
