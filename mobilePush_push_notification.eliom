@@ -113,13 +113,13 @@ let%server test_send_notification txt notification opt =
     print_response response;
     Lwt.return ()
   with
-  | Os_push_notifications.GCM_missing_field x ->
+  | Os_push_notifications.FCM_missing_field x ->
       Lwt_log.log ~level:Lwt_log.Error x
-  | Os_push_notifications.GCM_empty_response ->
+  | Os_push_notifications.FCM_empty_response ->
       Lwt_log.log ~level:Lwt_log.Error "Empty response"
-  | Os_push_notifications.GCM_no_json_response str ->
+  | Os_push_notifications.FCM_no_json_response str ->
       Lwt_log.log ~level:Lwt_log.Error ("No JSON response: " ^ str)
-  | Os_push_notifications.GCM_unauthorized ->
+  | Os_push_notifications.FCM_unauthorized ->
       Lwt_log.log ~level:Lwt_log.Error "You're unauthorized. Check your server \
       key and if you switched to FCM."
   | _ -> Lwt_log.log ~level:Lwt_log.Error "Must never be the case..."
