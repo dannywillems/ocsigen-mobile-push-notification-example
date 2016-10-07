@@ -62,8 +62,6 @@
 # If you use the manifoldjs solution, you need to sign the APPX before
 # installing it on a device.
 
-CORDOVAPATH := cordova
-MOBILESTATICPATH := mobile
 WWW_PATH := local/var/www/$(PROJECT_NAME)
 
 mobile-all: assets android browser # ios
@@ -208,21 +206,27 @@ endif
 ##----------------------------------------------------------------------
 ## Rules for static files.
 
-# Function to list files in a given directory $(1), and change prefix directory
-# to the target one $(2).
-# FIXME: -printf is not available on BSD.
-# Example: $(call static_targets,$(SOURCE_DIR),$(TARGET_DIR))
-static_targets = $(shell find $(1) -type f -printf "$(2)/%P\n")
-
 # Cordova static files which needs to be copied to the Cordova project
 # directory.
 CORDOVA_STATIC_FILES := \
     $(CORDOVAPATH)/.chcpignore \
     $(CORDOVAPATH)/res \
-    $(call static_targets,$(MOBILESTATICPATH)/www,$(CORDOVAPATH)/www)
+    $(patsubst $(MOBILESTATICPATH)/www/%, \
+               $(CORDOVAPATH)/www/%, \
+               $(shell find $(MOBILESTATICPATH)/www -type f) \
+     )
 
-# FIXME: duplicate rule warning for 'cordova/www/css/os_test.css'
-LOCAL_STATIC_FILES = $(call static_targets,$(LOCAL_STATIC),$(CORDOVAPATH)/www)
+# LOCAL_STATIC_FILES contains all static files which must be copied in the
+# Cordova www directory.
+# The file $(LOCAL_CSS), which is $(LOCAL_STATIC_CSS)/$(PROJECT_NAME).css, is
+# excluded, because it produces another rule for $(APPCSS). By excluding this
+# file, the CSS file which will be retrieved from the server (remote or local
+# depending on the APP_REMOTE value) instead of copied from $(LOCAL_CSS).
+LOCAL_STATIC_FILES = $(patsubst \
+    $(LOCAL_STATIC)/%, \
+    $(CORDOVAPATH)/www/%, \
+    $(shell find $(LOCAL_STATIC) -type f ! -name '$(PROJECT_NAME).css' \
+                 -path '$(LOCAL_STATIC_CSS)'))
 
 # Static files dependencies: if a file changes in these directory, a new copy
 # of static files will be triggered
@@ -259,7 +263,7 @@ $(CORDOVAPATH)/www/index.html: $(CORDOVAPATH) $(APPJS) mobile/index.html.in
 	    -e "s,%%APPSERVER%%,$(APP_SERVER),g" \
 	    -e "s,%%MOBILE_APP_NAME%%,$(MOBILE_APP_NAME),g" \
 	    mobile/index.html.in > \
-	$(CORDOVAPATH)/www/index.html
+	    $(CORDOVAPATH)/www/index.html
 
 # This rule generates eliom.html. md5sum is used to set the right JavaScript and
 # CSS filenames in the page.
@@ -330,7 +334,7 @@ $(WWW_PATH)/update/conf/chcp.json: $(WWW_PATH)/update/$(TIMESTAMP)
 
 chcp: $(WWW_PATH)/update/conf/chcp.json
 
-assets: $(CORDOVAPATH) icons chcp
+assets: $(CORDOVAPATH) chcp
 
 ##----------------------------------------------------------------------
 ## Cordova platform rules
@@ -354,7 +358,7 @@ $(ADD_PLATFORMS): add-%: $(CORDOVAPATH)/platforms/%
 PLATFORMS := android ios browser
 
 # before building, environment variables are checked and assets are copied.
-$(PLATFORMS): %: check-app-env assets add-%
+$(PLATFORMS): %: check-app-env icons-% assets add-%
 	cd $(CORDOVAPATH) ;\
 	cordova build $(CORDOVA_FLAGS) $*
 
@@ -475,9 +479,16 @@ splashes: $(IOS_SPLASHES)
 # Only this rule must be used to generate the icons.
 icons: $(ANDROID_ICONS) $(IOS_ICONS)
 
+icons-android: $(ANDROID_ICONS)
+
+icons-ios: $(IOS_ICONS)
+
+icons-clean:
+	rm -rf $(IOS_ICONS_PATH) $(ANDROID_ICONS_PATH)
+
 ##----------------------------------------------------------------------
 ## Cleaning rules.
 
-mobile-clean:
+mobile-clean: icons-clean
 	rm -rf $(CORDOVAPATH)
 	rm -f mobile/eliom_loader.byte mobile/eliom_loader.cmi mobile/eliom_loader.cmo
