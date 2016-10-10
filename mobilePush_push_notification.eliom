@@ -168,7 +168,11 @@ let%server test_send_notification_low () =
       "Sending notification with low priority..."
       notification
       opt
-  else Lwt.return ()
+  else
+  (
+      print_endline "No regitered ID";
+      Lwt.return ()
+  )
 (* LOW PRIORITY *)
 
 (* MAXIMUM PRIORITY *)
@@ -191,7 +195,12 @@ let%server test_send_notification_max () =
       "Sending notification with high priority..."
       notification
       opt
-  else Lwt.return ()
+  else
+  (
+      print_endline "No regitered ID";
+      Lwt.return ()
+  )
+
 (* MAXIMUM PRIORITY *)
 
 (* Export functions used by the notification *)
@@ -232,7 +241,11 @@ let%server test_send_notification_action () =
       "Sending notification with actions..."
       notification
       opt
-  else Lwt.return ()
+  else
+  (
+      print_endline "No regitered ID";
+      Lwt.return ()
+  )
 (* ACTIONS *)
 
 
@@ -253,7 +266,11 @@ let%server test_send_notification_redirection () =
       "Sending notification for redirection"
       notification
       opt
-  else Lwt.return ()
+  else
+  (
+      print_endline "No regitered ID";
+      Lwt.return ()
+  )
 (* REDIRECTION *)
 
 (* REDIRECTION *)
@@ -272,7 +289,11 @@ let%server test_send_notification_bad_registered_id () =
       "Sending notification to a bad ID. Must fail with an error."
       notification
       opt
-  else Lwt.return ()
+  else
+  (
+      print_endline "No regitered ID";
+      Lwt.return ()
+  )
 (* REDIRECTION *)
 
 (* RPC *)
