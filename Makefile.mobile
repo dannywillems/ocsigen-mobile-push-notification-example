@@ -225,7 +225,7 @@ CORDOVA_STATIC_FILES := \
 LOCAL_STATIC_FILES = $(patsubst \
     $(LOCAL_STATIC)/%, \
     $(CORDOVAPATH)/www/%, \
-    $(shell find $(LOCAL_STATIC) -type f ! -name '$(PROJECT_NAME).css' \
+    $(shell find $(LOCAL_STATIC) -type f ! -name '$(PROJECT_NAME)' \
                  -path '$(LOCAL_STATIC_CSS)'))
 
 # Static files dependencies: if a file changes in these directory, a new copy
@@ -349,7 +349,7 @@ $(CORDOVAPATH)/platforms/%: check-app-env assets $(CORDOVAPATH)
 
 ADD_PLATFORMS := add-android add-browser add-ios add-windows
 
-$(ADD_PLATFORMS): add-%: $(CORDOVAPATH)/platforms/%
+$(ADD_PLATFORMS): add-%: icons-% $(CORDOVAPATH)/platforms/%
 
 ##----------------------------------------------------------------------
 ## Cordova build rules.
@@ -396,6 +396,7 @@ ANDROID_ICONS_PATH = $(MOBILESTATICPATH)/res/android
 ANDROID_ICONS      = $(foreach name,$(ANDROID_ICON_NAMES),$(ANDROID_ICONS_PATH)/$(name).png)
 
 IOS_ICON_NAMES = \
+	icon-20 icon-20@2x \
 	icon-40 icon-40@2x \
 	icon-50 icon-50@2x \
 	icon-60 icon-60@2x icon-60@3x \
@@ -420,19 +421,19 @@ $(ANDROID_ICONS_PATH) $(IOS_ICONS_PATH):
 $(ANDROID_ICONS_PATH)/icon-%.png: $(ICON_PNG) $(ANDROID_ICONS_PATH)
 	$(convert_android) $*x$* $< $@
 
-# Simple icons (iOS)
-$(IOS_ICONS_PATH)/icon-%.png: $(ICON_PNG) $(IOS_ICONS_PATH)
-	$(convert_ios) $*x$* $< $@
+# Triple size icons (iOS)
+$(IOS_ICONS_PATH)/icon-%@3x.png: $(ICON_PNG) $(IOS_ICONS_PATH)
+	size=$$((3 * $*)) ;\
+	$(convert_ios) $${size}x$${size} $< $@
 
 # Double size icons (iOS)
 $(IOS_ICONS_PATH)/icon-%@2x.png: $(ICON_PNG) $(IOS_ICONS_PATH)
 	size=$$((2 * $*)) ;\
 	$(convert_ios) $${size}x$${size} $< $@
 
-# Triple size icons (iOS)
-$(IOS_ICONS_PATH)/icon-%@3x.png: $(ICON_PNG) $(IOS_ICONS_PATH)
-	size=$$((3 * $*)) ;\
-	$(convert_ios) $${size}x$${size} $< $@
+# Simple icons (iOS)
+$(IOS_ICONS_PATH)/icon-%.png: $(ICON_PNG) $(IOS_ICONS_PATH)
+	$(convert_ios) $*x$* $< $@
 
 # iOS icons with special names
 # To add one, use a rule like this:
