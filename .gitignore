@@ -16,3 +16,4 @@ mobile/eliom_loader.cm*
 mobile/eliom_loader.byte
 mobile/res/
 .DS_Store
+Makefile.local
