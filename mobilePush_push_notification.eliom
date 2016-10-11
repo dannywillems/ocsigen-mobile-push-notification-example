@@ -32,47 +32,21 @@ let%server rpc_save_registered_id =
 
 (* Initialization for the push notification service *)
 let%client push_notification () =
-  let android =
-    Cordova_push.Init_options.Android.create
-      ~sound:true
-      ~icon_color:"red"
-      ~vibrate:true
-      ~clear_notifications:false
-      ~sender_ID:sender_id
-      ()
-  in
-  let ios =
-      Cordova_push.Init_options.Ios.create
-      ~sender_ID:sender_id
-      ~sound:true
-      ~gcm_sandbox:true
-     ()
-  in
-  let push = Cordova_push.init @@
-    Cordova_push.Init_options.create ~android ~ios ()
-  in
-  Cordova_push.on_registration push (fun x ->
-    let s = Cordova_push.Data_registration.registration_id x in
-    Js_core.log_string s;
-    ignore (~%rpc_save_registered_id s)
-  );
-
-  Cordova_push.on_notification push (fun x ->
-    let add_data = Cordova_push.Data_notification.additional_data x in
-    let id = Cordova_push.Additional_data.not_id add_data in
-    Js_core.log_string (Cordova_push.Data_notification.title x);
-    Js_core.log_string (Cordova_push.Data_notification.message x);
-    if (id = "4")
-    then
-    (
-      let options_inappbrowser = [Cordova_in_app_browser.location true]
-      in
-      Cordova_in_app_browser.open_
-        "https://ocsigen.org"
-        Cordova_in_app_browser.System
-        (Cordova_in_app_browser.options_list_to_str options_inappbrowser)
+  Cordova_fcm.get_token
+    (fun token -> ignore (~%rpc_save_registered_id token))
+    (fun error -> Js_core.log_string error);
+  Cordova_fcm.on_notification
+    (fun data ->
+      if (Cordova_fcm.Data.was_tapped data)
+      then Js_core.log_string "Notification tapped"
+      else Js_core.log_string "Notification not tapped"
     )
-  )
+    (fun message -> Js_core.log_string
+      ("Callback successfully registered: " ^ message)
+    )
+    (fun error -> Js_core.log_string
+      ("Callback successfully registered: " ^ error)
+    )
 
 (* ---------- Client side ---------- *)
 (* -------------------------------------------------------------------------- *)
