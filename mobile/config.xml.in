@@ -115,9 +115,7 @@
     </chcp>
 
     <!-- Uncomment the following lines if you want to use push notifications -->
-    <plugin name="phonegap-plugin-push" spec="1.8.2" source="npm">
-        <variable name="SENDER_ID" value="%%MOBILE_NOTIFICATIONS_SENDER_ID%%" />
-    </plugin>
+    <plugin name="cordova-plugin-fcm" />
 
     <plugin name="cordova-plugin-inappbrowser" spec="1.4.0" />
 </widget>
