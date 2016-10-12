@@ -10,25 +10,17 @@ let create_button text fn =
     [pcdata text]
   )
 
-let low_button = create_button
+let normal_button = create_button
   "Low priority"
-  (MobilePush_push_notification.rpc_test_send_notification_low)
+  (MobilePush_push_notification.rpc_test_send_notification_normal)
 
 let high_button = create_button
   "High priority"
-  (MobilePush_push_notification.rpc_test_send_notification_max)
-
-let led_color_button = create_button
-  "Led color Ocsigen"
-  (MobilePush_push_notification.rpc_test_send_notification_led_color)
+  (MobilePush_push_notification.rpc_test_send_notification_high)
 
 let ocsigen_button = create_button
   "Go to ocsigen website"
   (MobilePush_push_notification.rpc_test_send_notification_redirection)
-
-let actions_button = create_button
-  "Notification with actions"
-  (MobilePush_push_notification.rpc_test_send_notification_action)
 
 let bad_registered_id_button = create_button
   "Bad registered ID, produces nothing"
@@ -53,8 +45,7 @@ let container children =
 let main_container =
   container
   [
-    high_button ; low_button ; led_color_button ; ocsigen_button ;
-    actions_button ; bad_registered_id_button
+    high_button ; normal_button ; ocsigen_button ; bad_registered_id_button
   ]
 
 [%%shared

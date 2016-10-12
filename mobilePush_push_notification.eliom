@@ -1,6 +1,5 @@
 let counter = ref 0
 
-let%client sender_id  = MobilePush_config.sender_id
 let%server server_key = MobilePush_config.server_key
 
 (* ----------------- *)
@@ -37,8 +36,13 @@ let%client push_notification () =
     (fun error -> Js_core.log_string error);
   Cordova_fcm.on_notification
     (fun data ->
+      Js_core.log_any data;
       if (Cordova_fcm.Data.was_tapped data)
-      then Js_core.log_string "Notification tapped"
+      then
+      (
+        Js_core.log_string "Notification tapped";
+        Js_core.log_any data
+      )
       else Js_core.log_string "Notification not tapped"
     )
     (fun message -> Js_core.log_string
@@ -46,7 +50,8 @@ let%client push_notification () =
     )
     (fun error -> Js_core.log_string
       ("Callback error registered: " ^ error)
-    )
+    );
+  ()
 
 (* ---------- Client side ---------- *)
 (* -------------------------------------------------------------------------- *)
@@ -77,11 +82,12 @@ let%server print_response response =
 (* -------------------------------------------------------------------------- *)
 (* Test *)
 
-let%server test_send_notification txt notification opt =
+let%server test_send_notification txt notification ?data opt =
   try%lwt
     let () = print_endline txt in
-    let%lwt response =
-      Os_push_notifications.send server_key notification opt
+    let%lwt response = match data with
+    | None -> Os_push_notifications.send server_key notification opt
+    | Some x -> Os_push_notifications.send server_key notification ~data:x opt
     in
     print_endline "Notification sent";
     print_response response;
@@ -98,73 +104,22 @@ let%server test_send_notification txt notification opt =
       key and if you switched to FCM."
   | _ -> Lwt_log.log ~level:Lwt_log.Error "Must never be the case..."
 
-
-(* Led color *)
-let%server test_send_notification_led_color () =
+(* HIGH PRIORITY *)
+let%server test_send_notification_high () =
   if (!registered_id) <> [] then
     let opt =
       Os_push_notifications.Options.create (!registered_id)
+    |> Os_push_notifications.Options.add_collapse_key "high_priority"
+    |> Os_push_notifications.Options.add_priority
+       Os_push_notifications.Options.Priority.High
     in
     let notification =
       Os_push_notifications.Notification.empty ()
-    |> Os_push_notifications.Notification.add_title "Led"
-    |> Os_push_notifications.Notification.add_message "Led color must changed \
-    to Ocsigen color"
-    |> Os_push_notifications.Notification.add_priority
-      Os_push_notifications.Notification.Priority.Low
-    |> Os_push_notifications.Notification.add_notification_id 0
-    |> Os_push_notifications.Notification.add_led_color 0 4 158 224
-    |> Os_push_notifications.Notification.add_raw_string "version" "0.2"
-    in
-    test_send_notification
-      "Sending notification with led color"
-      notification
-      opt
-  else Lwt.return ()
-(* Led color *)
-
-(* LOW PRIORITY *)
-let%server test_send_notification_low () =
-  if (!registered_id) <> [] then
-    let opt =
-      Os_push_notifications.Options.create (!registered_id)
-    in
-    let notification =
-      Os_push_notifications.Notification.empty ()
-    |> Os_push_notifications.Notification.add_title "Low priority"
-    |> Os_push_notifications.Notification.add_raw_string
-      "body"
-      "Must be under other notifications"
-    |> Os_push_notifications.Notification.add_priority
-      Os_push_notifications.Notification.Priority.Low
-    |> Os_push_notifications.Notification.add_notification_id 1
-    in
-    test_send_notification
-      "Sending notification with low priority..."
-      notification
-      opt
-  else
-  (
-      print_endline "No regitered ID";
-      Lwt.return ()
-  )
-(* LOW PRIORITY *)
-
-(* MAXIMUM PRIORITY *)
-let%server test_send_notification_max () =
-  if (!registered_id) <> [] then
-    let opt =
-      Os_push_notifications.Options.create (!registered_id)
-    in
-    let notification =
-      Os_push_notifications.Notification.empty ()
+    |> Os_push_notifications.Notification.add_click_action "FCM_PLUGIN_ACTIVITY"
     |> Os_push_notifications.Notification.add_title "High priority"
-    |> Os_push_notifications.Notification.add_message "Must be above other \
+    |> Os_push_notifications.Notification.Android.add_tag "high_priority"
+    |> Os_push_notifications.Notification.add_body "Must be above other \
     notifications"
-    |> Os_push_notifications.Notification.add_soundname "default"
-    |> Os_push_notifications.Notification.add_notification_id 2
-    |> Os_push_notifications.Notification.add_priority
-      Os_push_notifications.Notification.Priority.Maximum
     in
     test_send_notification
       "Sending notification with high priority..."
@@ -175,45 +130,27 @@ let%server test_send_notification_max () =
       print_endline "No regitered ID";
       Lwt.return ()
   )
+(* HIGH PRIORITY *)
 
-(* MAXIMUM PRIORITY *)
-
-(* Export functions used by the notification *)
-let%client _ =
-  Js.Unsafe.set
-    Js.Unsafe.global
-      "os_push_action_1"
-      (fun () -> Js_core.log_string "Action 1");
-  Js.Unsafe.set
-    Js.Unsafe.global
-      "os_push_action_2"
-      (fun () -> Js_core.log_string "Action 2")
-
-(* ACTIONS *)
-let%server test_send_notification_action () =
+(* NORMAL PRIORITY *)
+let%server test_send_notification_normal () =
   if (!registered_id) <> [] then
-    let action_1 =
-      Os_push_notifications.Notification.Action.create
-        "" "Action 1" "os_push_action_1" true
-    in
-    let action_2 =
-      Os_push_notifications.Notification.Action.create
-        "" "Action 2" "os_push_action_2" true
-    in
     let opt =
       Os_push_notifications.Options.create (!registered_id)
+    |> Os_push_notifications.Options.add_collapse_key "normal_priority"
+    |> Os_push_notifications.Options.add_priority
+       Os_push_notifications.Options.Priority.Normal
     in
     let notification =
       Os_push_notifications.Notification.empty ()
-    |> Os_push_notifications.Notification.add_title "Actions"
-    |> Os_push_notifications.Notification.add_message "Look into the console of \
-    the application after chosen the actions."
-    |> Os_push_notifications.Notification.add_actions action_1 action_2
-    |> Os_push_notifications.Notification.add_soundname "default"
-    |> Os_push_notifications.Notification.add_notification_id 3
+    |> Os_push_notifications.Notification.add_click_action "FCM_PLUGIN_ACTIVITY"
+    |> Os_push_notifications.Notification.add_title "Normal priority"
+    |> Os_push_notifications.Notification.Android.add_tag "normal_priority"
+    |> Os_push_notifications.Notification.add_body "Must be under other \
+    notifications"
     in
     test_send_notification
-      "Sending notification with actions..."
+      "Sending notification with normal priority..."
       notification
       opt
   else
@@ -221,25 +158,31 @@ let%server test_send_notification_action () =
       print_endline "No regitered ID";
       Lwt.return ()
   )
-(* ACTIONS *)
-
+(* NORMAL PRIORITY *)
 
 (* REDIRECTION *)
 let%server test_send_notification_redirection () =
   if (!registered_id) <> [] then
     let opt =
       Os_push_notifications.Options.create (!registered_id)
+    |> Os_push_notifications.Options.add_collapse_key "redirection"
     in
     let notification =
       Os_push_notifications.Notification.empty ()
+    |> Os_push_notifications.Notification.add_click_action "FCM_PLUGIN_ACTIVITY"
     |> Os_push_notifications.Notification.add_title "Redirection"
-    |> Os_push_notifications.Notification.add_message "Redirection to Ocsigen.org"
-    |> Os_push_notifications.Notification.add_soundname "default"
-    |> Os_push_notifications.Notification.add_notification_id 4
+    |> Os_push_notifications.Notification.add_body "Redirection to Ocsigen.org"
+    |> Os_push_notifications.Notification.Android.add_tag "redirection"
+    in
+    let data =
+      Os_push_notifications.Data.empty ()
+    |> Os_push_notifications.Data.add_raw_string "type" "redirection"
+    |> Os_push_notifications.Data.add_raw_string "url" "https://ocsigen.org"
     in
     test_send_notification
       "Sending notification for redirection"
       notification
+      ~data
       opt
   else
   (
@@ -248,17 +191,17 @@ let%server test_send_notification_redirection () =
   )
 (* REDIRECTION *)
 
-(* REDIRECTION *)
+(* BAD REGISTERED ID *)
 let%server test_send_notification_bad_registered_id () =
   if (!registered_id) <> [] then
     let opt =
-      Os_push_notifications.Options.create ("gsdfg" :: (!registered_id))
+      Os_push_notifications.Options.create ["gsdfg"]
     in
     let notification =
       Os_push_notifications.Notification.empty ()
+    |> Os_push_notifications.Notification.add_click_action "FCM_PLUGIN_ACTIVITY"
     |> Os_push_notifications.Notification.add_title "No sent"
-    |> Os_push_notifications.Notification.add_message "No sent"
-    |> Os_push_notifications.Notification.add_notification_id 5
+    |> Os_push_notifications.Notification.add_body "No sent"
     in
     test_send_notification
       "Sending notification to a bad ID. Must fail with an error."
@@ -269,28 +212,18 @@ let%server test_send_notification_bad_registered_id () =
       print_endline "No regitered ID";
       Lwt.return ()
   )
-(* REDIRECTION *)
+(* BAD REGISTERED ID *)
 
 (* RPC *)
-let%server rpc_test_send_notification_led_color =
-  Eliom_client.server_function ~name:"test send notification with led color"
+let%server rpc_test_send_notification_high =
+  Eliom_client.server_function ~name:"test send notification high"
     [%derive.json: unit]
-    test_send_notification_led_color
+    test_send_notification_high
 
-let%server rpc_test_send_notification_max =
-  Eliom_client.server_function ~name:"test send notification max"
+let%server rpc_test_send_notification_normal =
+  Eliom_client.server_function ~name:"test send notification normal"
     [%derive.json: unit]
-    test_send_notification_max
-
-let%server rpc_test_send_notification_action =
-  Eliom_client.server_function ~name:"test send notification action"
-    [%derive.json: unit]
-    test_send_notification_action
-
-let%server rpc_test_send_notification_low =
-  Eliom_client.server_function ~name:"test send notification low"
-    [%derive.json: unit]
-    test_send_notification_low
+    test_send_notification_normal
 
 let%server rpc_test_send_notification_redirection =
   Eliom_client.server_function ~name:"test send notification redirection"
