@@ -225,8 +225,8 @@ CORDOVA_STATIC_FILES := \
 LOCAL_STATIC_FILES = $(patsubst \
     $(LOCAL_STATIC)/%, \
     $(CORDOVAPATH)/www/%, \
-    $(shell find $(LOCAL_STATIC) -type f ! -name '$(PROJECT_NAME)' \
-                 -path '$(LOCAL_STATIC_CSS)'))
+    $(shell find $(LOCAL_STATIC) -type f ! -name '$(PROJECT_NAME).css' \
+                 ! -path '$(LOCAL_STATIC_CSS)'))
 
 # Static files dependencies: if a file changes in these directory, a new copy
 # of static files will be triggered
