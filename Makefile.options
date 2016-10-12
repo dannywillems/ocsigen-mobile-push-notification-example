@@ -29,7 +29,7 @@ SERVER_PACKAGES       := lwt.ppx js_of_ocaml.deriving.ppx ppx_deriving.std \
 CLIENT_PACKAGES       := lwt.ppx js_of_ocaml.ppx js_of_ocaml.deriving.ppx \
                          ppx_deriving.std ocsigen-start.client \
                          gen_js_api cordova cordova-plugin-statusbar \
-                         ocaml-js-stdlib cordova-plugin-push-notifications \
+                         ocaml-js-stdlib cordova-plugin-fcm \
                          cordova-plugin-inappbrowser
 
 ##----------------------------------------------------------------------
@@ -128,7 +128,7 @@ CORDOVAPATH                    := cordova
 # config.xml.in, index.html.in, eliom_loader.ml, ...
 MOBILESTATICPATH               := mobile
 
-MOBILE_APP_ID                  := com.mobilePush.mobile
+MOBILE_APP_ID                  := be.dannywillems.test.mobilepush
 MOBILE_APP_NAME                := mobilePush
 MOBILE_APP_VERSION             := 0.1
 MOBILE_DESCRIPTION             := mobilePush mobile application
@@ -136,6 +136,5 @@ MOBILE_AUTHOR_EMAIL            := developer@domain.com
 MOBILE_AUTHOR_HREF             := http://domain.com
 MOBILE_AUTHOR_DESCRIPTION      := mobilePush team
 MOBILE_ANDROID_SDK_VERSION     := 15
-MOBILE_NOTIFICATIONS_SENDER_ID := 424242424242
 
 ##----------------------------------------------------------------------
