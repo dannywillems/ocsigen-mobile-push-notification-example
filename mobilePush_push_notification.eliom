@@ -45,7 +45,7 @@ let%client push_notification () =
       ("Callback successfully registered: " ^ message)
     )
     (fun error -> Js_core.log_string
-      ("Callback successfully registered: " ^ error)
+      ("Callback error registered: " ^ error)
     )
 
 (* ---------- Client side ---------- *)
@@ -132,8 +132,9 @@ let%server test_send_notification_low () =
     let notification =
       Os_push_notifications.Notification.empty ()
     |> Os_push_notifications.Notification.add_title "Low priority"
-    |> Os_push_notifications.Notification.add_message "Must be under other \
-    notifications"
+    |> Os_push_notifications.Notification.add_raw_string
+      "body"
+      "Must be under other notifications"
     |> Os_push_notifications.Notification.add_priority
       Os_push_notifications.Notification.Priority.Low
     |> Os_push_notifications.Notification.add_notification_id 1
