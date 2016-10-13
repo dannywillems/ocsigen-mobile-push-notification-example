@@ -17,3 +17,8 @@ mobile/eliom_loader.byte
 mobile/res/
 .DS_Store
 Makefile.local
+
+# Specific files for the project.
+google-services.json
+GoogleService-Info.plist
+.depend
