@@ -1,3 +1,5 @@
+all:
+
 css: $(DEST) import-external-css
 
 # If you want to compile the CSS file from SASS files, uncomment the following
